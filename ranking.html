@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ranking - ClassVideo Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <style>
+        :root {
+            --theme-color: #00ffb3;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #0f0f0f;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        header {
+            background: #1f1f1f;
+            padding: 1rem 1.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 1rem;
+        }
+
+        .logo-circle {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background-color: #2c2c2c;
+            overflow: hidden;
+            border: 2px solid rgb(0, 230, 163);
+            flex-shrink: 0;
+        }
+
+        .logo-circle img {
+            width: 110%;
+            height: 110%;
+            object-fit: cover;
+        }
+
+        header h1 {
+            color: var(--theme-color);
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .nav-toggle {
+            position: fixed;
+            top: 1.8rem;
+            right: 1.2rem;
+            width: 30px;
+            height: 20px;
+            cursor: pointer;
+            z-index: 10001;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .nav-toggle span {
+            height: 4px;
+            background: rgb(0, 230, 163);
+            border-radius: 4px;
+            transition: all 0.4s ease;
+        }
+
+        .nav-links {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            height: 100vh;
+            width: 220px;
+            background: #1a1a1a;
+            padding-top: 5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            align-items: flex-start;
+            padding-left: 2rem;
+            transition: right 0.4s ease;
+            z-index: 1000;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--theme-color);
+        }
+
+        .nav-active .nav-links {
+            right: 0;
+        }
+
+        .nav-active .nav-toggle span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .nav-active .nav-toggle span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .nav-active .nav-toggle span:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+
+        .main-content {
+            padding: 2rem 1rem;
+            margin-right: 240px;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .ranking-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 3rem;
+            gap: 1rem;
+        }
+
+        .ranking-item {
+            background: #1a1a1a;
+            border-radius: 12px;
+            padding: 1rem 2rem;
+            margin: 1rem;
+            width: 80%;
+            max-width: 600px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.2rem;
+            box-shadow: 0 0 15px rgba(0, 255, 179, 0.2);
+            animation: fadeIn 1s ease-out;
+            padding: 1rem 2rem;
+            gap: 1rem;
+        }
+
+        .ranking-item span {
+            font-weight: bold;
+        }
+
+        /* Trophy Animation */
+        .first {
+            background: linear-gradient(45deg, #ffcc00, #ff9900);
+            animation: bounce 1s infinite alternate, glow 1.5s ease-in-out infinite;
+            box-shadow: 0 0 15px #ff9900;
+        }
+
+        .second {
+            background: linear-gradient(45deg, #c0c0c0, #808080);
+            animation: shake 1s infinite alternate, glow 1.5s ease-in-out infinite;
+            box-shadow: 0 0 15px #808080;
+        }
+
+        .third {
+            background: linear-gradient(45deg, #cd7f32, #b87333);
+            animation: pulse 1s infinite alternate, glow 1.5s ease-in-out infinite;
+            box-shadow: 0 0 15px #b87333;
+        }
+
+        .ranking-item .trophy {
+            font-size: 1.8rem;
+            margin-right: 1rem;
+            animation: floatTrophy 2.5s ease-in-out infinite, shine 4s infinite linear;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .first .trophy::before {
+            content: "🏆";
+        }
+
+        .second .trophy::before {
+            content: "🥈";
+        }
+
+        .third .trophy::before {
+            content: "🥉";
+        }
+
+        @keyframes floatTrophy {
+            0% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+
+            100% {
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes shine {
+            0% {
+                filter: brightness(1);
+            }
+
+            50% {
+                filter: brightness(1.6);
+            }
+
+            100% {
+                filter: brightness(1);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounce {
+            from {
+                transform: translateY(0);
+            }
+
+            to {
+                transform: translateY(-15px);
+            }
+        }
+
+        @keyframes shake {
+            from {
+                transform: scale(1.1);
+            }
+
+            to {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes pulse {
+            from {
+                transform: scale(1);
+            }
+
+            to {
+                transform: scale(1.1);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                margin-right: 0;
+                padding: 1.5rem 1rem;
+            }
+
+            h2 {
+                font-size: 1rem;
+            }
+
+            .ranking-item {
+                font-size: 1rem;
+            }
+
+            .ranking-container {
+                width: 100%;
+            }
+        }
+
+        #ranking-placeholder {
+            color: #aaa;
+            text-align: center;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="nav-toggle" onclick="toggleNav()">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="#">Science</a>
+        <a href="#">Math</a>
+        <a href="#">Notes</a>
+        <a href="#">Abouts</a>
+        <a href="mock_test.html">Mock Test</a>
+        <a href="ranking.html">Ranking</a>
+
+    </nav>
+
+    <header>
+        <div class="logo-circle">
+            <img src="green colour logo.png" alt="Site Logo">
+        </div>
+        <h1>ClassVideo Hub</h1>
+    </header>
+
+    <div class="main-content">
+        <h2>Mock Test Rankings</h2>
+        <div class="ranking-container" id="ranking-container">
+            <div id="ranking-placeholder">Loading rankings...</div>
+        </div>
+    </div>
+
+    <script>
+        function toggleNav() {
+            document.body.classList.toggle('nav-active');
+        }
+
+        // Google Sheet Integration
+        google.charts.load('current', { packages: ['corechart', 'table'] });
+        google.charts.setOnLoadCallback(fetchRankingData);
+
+        function fetchRankingData() {
+            const sheetID = '1oe4FjdqQaU3X1EuOu9CbU_B1oQE_7r6tcOoXhji6TnA';
+            const sheetName = 'Sheet1';
+            const query = new google.visualization.Query(
+                `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?sheet=${sheetName}&tq=${encodeURIComponent('SELECT A, F')}`
+            );
+
+            query.send(response => {
+                if (response.isError()) {
+                    document.getElementById('ranking-container').innerHTML = '<div style="color:red;text-align:center;">Error loading data.</div>';
+                    return;
+                }
+
+                const data = response.getDataTable();
+                const container = document.getElementById('ranking-container');
+                container.innerHTML = ""; // Clear placeholder
+
+                for (let i = 0; i < data.getNumberOfRows(); i++) {
+                    const name = data.getValue(i, 0);
+                    const score = data.getValue(i, 1);
+                    const rank = i + 1;
+
+                    let className = "ranking-item";
+                    if (i === 0) className += " first";
+                    else if (i === 1) className += " second";
+                    else if (i === 2) className += " third";
+
+                    const div = document.createElement("div");
+                    div.className = className;
+
+                    const trophy = (i < 3) ? '<div class="trophy"></div>' : '';
+                    div.innerHTML = `${trophy}<span>${rank}${getOrdinal(rank)}</span> - ${name}: ${score}`;
+                    container.appendChild(div);
+                }
+            });
+        }
+
+        function getOrdinal(n) {
+            if (n > 3) return "th";
+            return n === 1 ? "st" : n === 2 ? "nd" : "rd";
+        }
+    </script>
+</body>
+
+</html>
