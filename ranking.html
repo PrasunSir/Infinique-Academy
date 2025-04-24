@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ranking - ClassVideo Hub</title>
+  <title>Ranking - Infinique Academy</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <style>
@@ -58,6 +58,7 @@
       font-weight: 700;
       font-size: 1.5rem;
     }
+
     .tagline {
       font-size: 0.95rem;
       font-weight: 300;
@@ -311,8 +312,19 @@
       text-align: center;
       margin-top: 2rem;
     }
-        /* 🛑 Overlay Styling */
-        .exam-overlay {
+
+    @media (max-width: 380px) {
+      header h1 {
+        font-size: 1.3rem;
+      }
+
+      .tagline {
+        font-size: .85rem;
+      }
+    }
+
+    /* 🛑 Overlay Styling */
+    .exam-overlay {
       position: fixed;
       top: 0;
       left: 0;
@@ -337,11 +349,11 @@
 </head>
 
 <body>
-    <!-- 🔒 Overlay Div -->
-    <div class="exam-overlay" id="examOverlay">
-      🚧 No Ranks Available Right Now!<br><br>
-      Please check back later! 🕒
-    </div>
+  <!-- 🔒 Overlay Div -->
+  <div class="exam-overlay" id="examOverlay">
+    🚧 No Ranks Available Right Now!<br><br>
+    Please check back later! 🕒
+  </div>
   <div class="nav-toggle" onclick="toggleNav()">
     <span></span>
     <span></span>
